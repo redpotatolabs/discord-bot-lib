@@ -93,6 +93,11 @@ type RunConfig struct {
 	OnReady func(*discordgo.Session)
 	// ShutdownTimeout caps the total drain time. Defaults to 10s.
 	ShutdownTimeout time.Duration
+	// WatchdogStall is how long the gateway connection may stay unhealthy
+	// (disconnected, missing heartbeat ACKs, or session lock held) before
+	// Run gives up and returns ErrGatewayStalled. Defaults to 5m; negative
+	// disables the watchdog.
+	WatchdogStall time.Duration
 }
 
 // Run opens the discordgo session, launches workers, runs OnReady, and
@@ -101,11 +106,22 @@ type RunConfig struct {
 //
 // Worker errors are reported through Reporter but never stop the bot —
 // matches the existing "web UI failure must not kill the bot" stance.
+//
+// A gateway watchdog runs alongside the workers. If the connection stays
+// unhealthy for WatchdogStall, Run shuts down without closing the session
+// (which may be deadlocked) and returns ErrGatewayStalled.
 func (a *App) Run(ctx context.Context, cfg RunConfig) error {
 	if err := a.Session.Open(); err != nil {
 		return fmt.Errorf("botlib: session.Open: %w", err)
 	}
-	defer a.Session.Close()
+	var stallErr error
+	defer func() {
+		// Close takes the session mutex, which a stalled session may never
+		// release.
+		if stallErr == nil {
+			a.Session.Close()
+		}
+	}()
 
 	if cfg.OnReady != nil {
 		cfg.OnReady(a.Session)
@@ -113,6 +129,24 @@ func (a *App) Run(ctx context.Context, cfg RunConfig) error {
 
 	workerCtx, cancelWorkers := context.WithCancel(ctx)
 	defer cancelWorkers()
+
+	stalled := make(chan error, 1)
+	if cfg.WatchdogStall >= 0 {
+		stall := cfg.WatchdogStall
+		if stall == 0 {
+			stall = defaultWatchdogStall
+		}
+		wd := &watchdog{
+			probe:    func() bool { return sessionHealthy(a.Session) },
+			interval: min(watchdogInterval, stall/4),
+			stall:    stall,
+		}
+		go func() {
+			if err := wd.run(workerCtx); err != nil {
+				stalled <- err
+			}
+		}()
+	}
 
 	var wg sync.WaitGroup
 	for _, w := range cfg.Workers {
@@ -131,6 +165,7 @@ func (a *App) Run(ctx context.Context, cfg RunConfig) error {
 	select {
 	case <-stop:
 	case <-ctx.Done():
+	case stallErr = <-stalled:
 	}
 
 	cancelWorkers()
@@ -141,6 +176,12 @@ func (a *App) Run(ctx context.Context, cfg RunConfig) error {
 	}
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
+
+	if stallErr != nil {
+		a.Reporter.Report(shutdownCtx, "error",
+			fmt.Sprintf("%v; exiting so the supervisor restarts the bot", stallErr))
+	}
+
 	for _, sd := range cfg.Shutdowners {
 		stepCtx, stepCancel := context.WithTimeout(shutdownCtx, 5*time.Second)
 		if err := sd.Shutdown(stepCtx); err != nil {
@@ -149,6 +190,20 @@ func (a *App) Run(ctx context.Context, cfg RunConfig) error {
 		stepCancel()
 	}
 
-	wg.Wait()
-	return nil
+	if stallErr == nil {
+		wg.Wait()
+		return nil
+	}
+	// A worker blocked on the stalled session must not keep the process up.
+	done := make(chan struct{})
+	go func() {
+		wg.Wait()
+		close(done)
+	}()
+	select {
+	case <-done:
+	case <-shutdownCtx.Done():
+		a.logger.Warnf("workers still running at shutdown timeout; exiting anyway")
+	}
+	return stallErr
 }
