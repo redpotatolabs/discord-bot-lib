@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/epistemi/beacon/pkg/beacon"
+	"github.com/redpotatolabs/beacon/pkg/beacon"
 )
 
 // BaseConfig holds the fields every redpotatolabs Discord bot needs. Callers

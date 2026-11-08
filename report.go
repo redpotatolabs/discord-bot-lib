@@ -3,7 +3,7 @@ package botlib
 import (
 	"context"
 
-	"github.com/epistemi/beacon/pkg/beacon"
+	"github.com/redpotatolabs/beacon/pkg/beacon"
 )
 
 // BeaconReporter wraps a beacon.Client with the standard log-then-post

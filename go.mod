@@ -4,8 +4,8 @@ go 1.25.8
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/epistemi/beacon v0.0.0-20260519034023-4842dbe55193
 	github.com/gorilla/websocket v1.4.2
+	github.com/redpotatolabs/beacon v0.0.0-20261108154033-f4889ed8bd9b
 	go.uber.org/zap v1.28.0
 )
 

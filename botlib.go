@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/epistemi/beacon/pkg/beacon"
+	"github.com/redpotatolabs/beacon/pkg/beacon"
 )
 
 // App is the shared bot lifecycle harness. It owns the discordgo session,

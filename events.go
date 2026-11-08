@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/epistemi/beacon/pkg/beacon"
+	"github.com/redpotatolabs/beacon/pkg/beacon"
 )
 
 // CommandRegistrar is everything the dispatcher needs from the caller.
