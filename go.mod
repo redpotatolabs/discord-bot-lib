@@ -1,4 +1,4 @@
-module github.com/epistemi/discord-bot-lib
+module github.com/redpotatolabs/discord-bot-lib
 
 go 1.25.8
 

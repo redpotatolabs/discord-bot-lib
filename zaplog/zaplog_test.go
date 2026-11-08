@@ -3,7 +3,7 @@ package zaplog
 import (
 	"testing"
 
-	botlib "github.com/epistemi/discord-bot-lib"
+	botlib "github.com/redpotatolabs/discord-bot-lib"
 )
 
 // TestImplementsLogger asserts at compile time that *Logger satisfies

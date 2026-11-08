@@ -9,7 +9,7 @@ import (
 	"github.com/epistemi/beacon/pkg/beacon"
 )
 
-// BaseConfig holds the fields every epistemi Discord bot needs. Callers
+// BaseConfig holds the fields every redpotatolabs Discord bot needs. Callers
 // embed it in their own Config struct and add their domain fields
 // alongside:
 //

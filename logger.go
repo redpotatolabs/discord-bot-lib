@@ -1,5 +1,5 @@
 // Package botlib is the shared Discord-bot lifecycle harness used by
-// epistemi services (beacon, vault, tater). It owns the bits that don't
+// redpotatolabs services (beacon, vault, tater). It owns the bits that don't
 // belong in any one bot: discordgo session boot, per-guild command
 // registration, the InteractionCreate dispatcher, beacon-backed error
 // reporting, the standard config validation pattern, and an opinionated
