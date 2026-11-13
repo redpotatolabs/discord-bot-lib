@@ -6,8 +6,8 @@ github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0U
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/redpotatolabs/beacon v0.0.0-20261108154033-f4889ed8bd9b h1:vOdZ+5AkMobvB6ZFZvGTMQK+bLQHBO9L22ZQdP8x4Fg=
-github.com/redpotatolabs/beacon v0.0.0-20261108154033-f4889ed8bd9b/go.mod h1:1zutJjO08aEx2/u2DB2CvazwuJ9D5hzfhjmkOgf7Op0=
+github.com/redpotatolabs/beacon-client v0.0.0-20261113192306-a6a7d4ea06c5 h1:JqVTXg/+lWHUexxrqYOJV7IgQsukLF9InpN6CMHZwmc=
+github.com/redpotatolabs/beacon-client v0.0.0-20261113192306-a6a7d4ea06c5/go.mod h1:ZAv4d+h157VvbAz6Ms6IKKNh6jrD3GVPb97u+gQdSC0=
 github.com/stretchr/testify v1.8.1 h1:w7B6lhMri9wdJUVmEZPGGhZzrYTPvgJArz7wNPgYKsk=
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 go.uber.org/goleak v1.3.0 h1:2K3zAYmnTNqV73imy9J1T3WC+gmCePx2hEGkimedGto=

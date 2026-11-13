@@ -8,9 +8,6 @@
 // Domain code (commands, stores, business logic) stays per-bot.
 // botlib depends on small interfaces (CommandRegistrar, GuildLister,
 // Logger, Shutdowner), not on the caller's Bot struct.
-//
-// See discord-bot-lib-api.md in the planning tree for the full design
-// and locked decisions.
 package botlib
 
 import (
