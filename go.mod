@@ -5,7 +5,7 @@ go 1.25.8
 require (
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/gorilla/websocket v1.4.2
-	github.com/redpotatolabs/beacon v0.0.0-20261108154033-f4889ed8bd9b
+	github.com/redpotatolabs/beacon-client v0.0.0-20261113192306-a6a7d4ea06c5
 	go.uber.org/zap v1.28.0
 )
 
